@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<head>
+    <link rel="stylesheet" href="site.css">
+</head>
+
+<div class="text-center">
+    <h1 class="display-4">SunSetSQL!</h1>
+</div>
+
+<div class="scrolls" id="outer_wrapper">
+    <div style="float: left;" class="tableContainer">
+        <div id="tablePosition1">
+        </div>
+    </div>
+    <div style="float: left; margin-top: 150px;" class="tableContainer">
+        <div id="tablePosition2">
+        </div>
+    </div>
+</div>
+
+
+<div id="options">
+    <select id="SQLService">
+        <option value="MySQL">MySQL</option>
+        <option value="SQL Server">SQL Server</option>
+    </select>
+</div>
+
+<div id="foo">
+    <button id="view" onclick="getView()">Get View</button>
+    <button id="movement">Get Movement Command</button>
+</div>
