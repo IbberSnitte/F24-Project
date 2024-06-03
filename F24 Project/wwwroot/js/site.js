@@ -3,36 +3,44 @@
 
 // Write your JavaScript code.
 let dataschemas = [
-    { columnname: 'ID', datatype: 'BIGINT', connection: '1' },
-    { columnname: 'Name', datatype: 'VARCHAR', connection: '2' },
-    { columnname: 'Address', datatype: 'VARCHAR', connection: '3' }
+    { columnname: 'ID', connection: '1' },
+    { columnname: 'Name', connection: '2' }
 ];
+
+var thereAreNoErrors = true;
+var idHelper = 0;
+var SQLTypeArray = ["BIGINT", "BINARY", "DATE", "FLOAT", "INT", "VARCHAR"];
+
+const tableName1 = document.createElement("div");
+tableName1.setAttribute("class", "tableName");
+tableName1.setAttribute("id", "tableName1");
+tableName1.textContent = "SchemaNameA.DatabaseNameA";
+tableName1.contentEditable = "true";
 
 const newTable = document.createElement("table");
 newTable.setAttribute("id", "data1");
 for (dataschema of dataschemas) {
     const newColumn = document.createElement("tc");
+    columnID(newColumn);
     const newRow1 = document.createElement("tr");
     const newRow2 = document.createElement("tr");
     const tdColumnname = document.createElement("td");
     const tdDatatype = document.createElement("td");
     const tdConnection = document.createElement("td");
-    const editableField = document.createElement("div");
-    editableField.setAttribute("class", "editableField");
-    editableField.contentEditable = "true";
-    editableField.textContent = dataschema.columnname;
-    tdColumnname.append(editableField);
-    tdDatatype.appendChild(datatypeField());
-    tdConnection.textContent = dataschema.connection;
+    tdColumnname.append(addNameField());
+    tdDatatype.appendChild(addDataType());
+    tdConnection.appendChild(addConnection());
     newRow1.appendChild(tdDatatype);
     newRow2.appendChild(tdConnection);
     newColumn.appendChild(tdColumnname);
     newColumn.appendChild(newRow1);
     newColumn.appendChild(newRow2);
+    newColumn.appendChild(deleteColumnButton());
     newTable.appendChild(newColumn);
 }
 
 const target = document.getElementById('tablePosition1');
+target.appendChild(tableName1);
 target.appendChild(newTable);
 
 var inputElement = document.createElement('button');
@@ -44,17 +52,36 @@ inputElement.addEventListener('click', function () {
 });
 target.appendChild(inputElement);
 
-
-function datatypeField() {
-    //const datafield = document.createElement("div");
-    //datafield.textContent = dataschema.datatype;
-
+function addNameField() {
     const editableField = document.createElement("div");
-    editableField.setAttribute("class", "dropdownSelect");
-
-    editableField.textContent = dataschema.datatype;
-
+    editableField.setAttribute("class", "editableField");
+    editableField.contentEditable = "true";
+    editableField.textContent = dataschema.columnname;
     return editableField;
+}
+
+function addDataType() {
+
+    var selectList = document.createElement("select");
+    selectList.setAttribute("id", "dataTypes");
+
+    for (var i = 0; i < SQLTypeArray.length; i++) {
+        var option = document.createElement("option");
+        option.value = SQLTypeArray[i];
+        option.text = SQLTypeArray[i];
+        selectList.appendChild(option);
+    }
+
+    return selectList;
+}
+
+function addConnection() {
+    const connectionField = document.createElement("div");
+    connectionField.setAttribute("class", "editableField");
+    connectionField.setAttribute("onkeypress", "validate(event)");
+    connectionField.contentEditable = "true";
+    connectionField.textContent = dataschema.connection;
+    return connectionField;
 }
 
 /* When the user clicks on the button,
@@ -76,32 +103,37 @@ window.onclick = function (event) {
         }
     }
 } 
+
 let dataschemas2 = [
-    { columnname: 'ID', datatype: 'BIGINT' },
-    { columnname: 'Name', datatype: 'VARCHAR' },
-    { columnname: 'Address', datatype: 'VARCHAR' }
+    { columnname: 'ID' },
+    { columnname: 'Name' }
 ];
+
+const tableName2 = document.createElement("div");
+tableName2.setAttribute("class", "tableName");
+tableName2.setAttribute("id", "tableName2");
+tableName2.textContent = "SchemaNameB.DatabaseNameB";
+tableName2.contentEditable = "true";
 
 const newTable2 = document.createElement("table");
 newTable2.setAttribute("id", "data2");
 for (dataschema of dataschemas2) {
     const newColumn = document.createElement("tc");
+    columnID(newColumn);
     const newRow1 = document.createElement("tr");
     const tdColumnname = document.createElement("td");
     const tdDatatype = document.createElement("td");
-    const editableField = document.createElement("div");
-    editableField.setAttribute("class", "editableField");
-    editableField.contentEditable = "true";
-    editableField.textContent = dataschema.columnname;
-    tdColumnname.append(editableField);
-    tdDatatype.textContent = dataschema.datatype;
+    tdColumnname.append(addNameField());
+    tdDatatype.appendChild(addDataType());
     newRow1.appendChild(tdDatatype);
     newColumn.appendChild(tdColumnname);
     newColumn.appendChild(newRow1);
+    newColumn.appendChild(deleteColumnButton());
     newTable2.appendChild(newColumn);
 }
 
 const target2 = document.getElementById('tablePosition2');
+target2.appendChild(tableName2);
 target2.appendChild(newTable2);
 
 var inputElement = document.createElement('button');
@@ -116,51 +148,122 @@ target2.appendChild(inputElement);
 function addColumn(target) {
     var tableX = document.getElementById(target);
     const newColumn = document.createElement("tc");
+    columnID(newColumn);
     const newRow1 = document.createElement("tr");
     const tdColumnname = document.createElement("td");
     const tdDatatype = document.createElement("td");
-    const editableField = document.createElement("div");
-    editableField.setAttribute("class", "editableField");
-    editableField.contentEditable = "true";
-    editableField.textContent = dataschema.columnname;
-    tdColumnname.append(editableField);
-    tdDatatype.textContent = dataschema.datatype;
+    tdColumnname.append(addNameField());
+    tdDatatype.appendChild(addDataType());
     newRow1.appendChild(tdDatatype);
     newColumn.appendChild(tdColumnname);
     newColumn.appendChild(newRow1);
     if (target == "data1") {
         const newRow2 = document.createElement("tr");
         const tdConnection = document.createElement("td");
-        tdConnection.textContent = dataschema.connection;
+        tdConnection.appendChild(addConnection());
         newRow2.appendChild(tdConnection);
         newColumn.appendChild(newRow2);
     }
+    newColumn.appendChild(deleteColumnButton());
     tableX.append(newColumn);
+}
+
+function columnID(column){
+    idHelper = idHelper + 1;
+    column.setAttribute("ID", "Column" + idHelper);
+}
+
+function deleteColumnButton() {
+    const newRow = document.createElement("tr");
+    var deleteButton = document.createElement('button');
+    deleteButton.textContent = "-";
+    deleteButton.setAttribute("class", "deleteButton");
+    var beancounter = idHelper;
+    deleteButton.addEventListener('click', function () {
+        removeColumn("Column" + beancounter);
+    });
+    newRow.appendChild(deleteButton);
+    return newRow;
+}
+
+function removeColumn(columnID) {
+    var elem = document.getElementById(columnID);
+    elem.parentNode.removeChild(elem);
+    console.log("beans");
 }
 
 function getView() {
     var viewMessage;
-    if (thereAreErrors = true) {
+    if (thereAreNoErrors = true) {
         const table1 = document.getElementById('data1');
-        var initialData = table1.innerText;
-        var fields = initialData.split('\n');
+        var initialData1 = table1.innerText;
+        var fields1 = initialData1.split('\n');
+        const table2 = document.getElementById('data2');
+        var initialData2 = table2.innerText;
+        var fields2 = initialData2.split('\n');
         var message = "";
+        var message2 = "";
 
-        for (let i = 0; i < fields.length; i++) {
-            if (i % 4 == 0) {
-                message = message + "name: " + fields[i] + "\n"
+        for (let i = 0; i < fields1.length; i++) {
+            if (i % 6 == 0) {
+                message2 = message2 + fields1[i] + " as ";
+                message = message + "name: " + fields1[i] + "\n";
             }
-            if (i % 4 == 1) {
-                message = message + "datatype: " + fields[i] + "\n"
-            }
-            if (i % 4 == 3) {
-                message = message + "connection: " + fields[i] + "\n"
+            if (i % 6 == 3) {
+                message2 = message2 + fields2[parseInt((fields1[i]) - 1) * 3] + ", ";
             }
         }
-
+        message = "CREATE VIEW " + document.getElementById("tableName1").innerText + " AS\n" +
+            "SELECT " + message2.substring(0, message2.length - 2) + "\n" +
+            "FROM " + document.getElementById("tableName2").innerText + ";";
         viewMessage = message;
     } else {
         viewMessage = "Errors were issued. As a result, no SQL has been generated as it would cause database errors. Please look at the errors and make any fixes necessary.";
     }
     window.alert(viewMessage);
+}
+
+function getMoveCommand() {
+    var moveMessage = "beans";
+    if (thereAreNoErrors = true) {
+        const table1 = document.getElementById('data1');
+        var initialData1 = table1.innerText;
+        var fields1 = initialData1.split('\n');
+        const table2 = document.getElementById('data2');
+        var initialData2 = table2.innerText;
+        var fields2 = initialData2.split('\n');
+        var message = "";
+
+        for (let i = 0; i < fields2.length; i++) {
+            if (i % 2 == 0) {
+                message = message + fields2[i] + ", ";
+            }
+        }
+
+        moveMessage =
+            "INSERT INTO " + document.getElementById("tableName2").innerText + " (" + message.substring(0, message.length - 2) + ")" + "\n" +
+            "SELECT *" + "\n" +
+            "FROM " + document.getElementById("tableName1").innerText + ";\n";
+    } else {
+        viewMessage = "Errors were issued. As a result, no SQL has been generated as it would cause database errors. Please look at the errors and make any fixes necessary.";
+    }
+
+    window.alert(moveMessage);
+}
+
+function validate(evt) {
+    var theEvent = evt || window.event;
+
+    if (theEvent.type === 'paste') {
+        key = event.clipboardData.getData('text/plain');
+    } else {
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+    }
+
+    var regex = /[0-9]/;
+    if (!regex.test(key)) {
+        theEvent.returnValue = false;
+        if (theEvent.preventDefault) theEvent.preventDefault();
+    }
 }
