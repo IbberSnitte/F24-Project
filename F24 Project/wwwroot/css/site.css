@@ -1,5 +1,18 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+.App {
+    font-family: sans-serif;
+    text-align: center;
+}
+
+.connectPoint {
+    opacity: 0.2;
+}
+
+    .connectPoint:hover {
+        opacity: 0.6;
+    }
+
 
 a.navbar-brand {
     white-space: normal;
@@ -121,7 +134,7 @@ table, td, th {
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
-    height: 500px;
+    height: 100%;
     width: 100%;
 }
 

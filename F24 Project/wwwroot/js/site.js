@@ -2,9 +2,14 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+import Gallery from './Gallery.js';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Gallery />);
+
+
 let dataschemas = [
-    { columnname: 'ID', connection: '1' },
-    { columnname: 'Name', connection: '2' }
+    { columnname: 'Name', connection: '1' }
 ];
 
 var thereAreNoErrors = true;
@@ -24,17 +29,19 @@ for (dataschema of dataschemas) {
     columnID(newColumn);
     const newRow1 = document.createElement("tr");
     const newRow2 = document.createElement("tr");
+    const newRow3 = document.createElement("tr");
     const tdColumnname = document.createElement("td");
     const tdDatatype = document.createElement("td");
     const tdConnection = document.createElement("td");
     tdColumnname.append(addNameField());
     tdDatatype.appendChild(addDataType());
     tdConnection.appendChild(addConnection());
-    newRow1.appendChild(tdDatatype);
-    newRow2.appendChild(tdConnection);
-    newColumn.appendChild(tdColumnname);
+    newRow1.appendChild(tdColumnname);
+    newRow2.appendChild(tdDatatype);
+    newRow3.appendChild(tdConnection);
     newColumn.appendChild(newRow1);
     newColumn.appendChild(newRow2);
+    newColumn.appendChild(newRow3);
     newColumn.appendChild(deleteColumnButton());
     newTable.appendChild(newColumn);
 }
@@ -51,6 +58,52 @@ inputElement.addEventListener('click', function () {
     addColumn("data1");
 });
 target.appendChild(inputElement);
+
+let dataschemas2 = [
+    { columnname: 'Name' }
+];
+
+const tableName2 = document.createElement("div");
+tableName2.setAttribute("class", "tableName");
+tableName2.setAttribute("id", "tableName2");
+tableName2.textContent = "SchemaNameB.DatabaseNameB";
+tableName2.contentEditable = "true";
+
+const newTable2 = document.createElement("table");
+newTable2.setAttribute("id", "data2");
+for (dataschema of dataschemas2) {
+    const newColumn = document.createElement("tc");
+    columnID(newColumn);
+    const newRow1 = document.createElement("tr");
+    const newRow2 = document.createElement("tr");
+    const tdColumnname = document.createElement("td");
+    const tdDatatype = document.createElement("td");
+    tdColumnname.append(addNameField());
+    tdDatatype.appendChild(addDataType());
+    newRow1.appendChild(tdColumnname);
+    newRow2.appendChild(tdDatatype);
+    newColumn.appendChild(newRow1);
+    newColumn.appendChild(newRow2);
+    newColumn.appendChild(deleteColumnButton());
+    newTable2.appendChild(newColumn);
+}
+
+const target2 = document.getElementById('tablePosition2');
+target2.appendChild(tableName2);
+target2.appendChild(newTable2);
+
+var inputElement = document.createElement('button');
+inputElement.textContent = "+";
+inputElement.setAttribute("class", "addColumnButton");
+inputElement.setAttribute("id", "addField2");
+inputElement.addEventListener('click', function () {
+    addColumn("data2");
+});
+target2.appendChild(inputElement);
+
+
+
+
 
 function addNameField() {
     const editableField = document.createElement("div");
@@ -84,85 +137,26 @@ function addConnection() {
     return connectionField;
 }
 
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
-}
-
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function (event) {
-    if (!event.target.matches('.dropbtn')) {
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        var i;
-        for (i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-            }
-        }
-    }
-} 
-
-let dataschemas2 = [
-    { columnname: 'ID' },
-    { columnname: 'Name' }
-];
-
-const tableName2 = document.createElement("div");
-tableName2.setAttribute("class", "tableName");
-tableName2.setAttribute("id", "tableName2");
-tableName2.textContent = "SchemaNameB.DatabaseNameB";
-tableName2.contentEditable = "true";
-
-const newTable2 = document.createElement("table");
-newTable2.setAttribute("id", "data2");
-for (dataschema of dataschemas2) {
-    const newColumn = document.createElement("tc");
-    columnID(newColumn);
-    const newRow1 = document.createElement("tr");
-    const tdColumnname = document.createElement("td");
-    const tdDatatype = document.createElement("td");
-    tdColumnname.append(addNameField());
-    tdDatatype.appendChild(addDataType());
-    newRow1.appendChild(tdDatatype);
-    newColumn.appendChild(tdColumnname);
-    newColumn.appendChild(newRow1);
-    newColumn.appendChild(deleteColumnButton());
-    newTable2.appendChild(newColumn);
-}
-
-const target2 = document.getElementById('tablePosition2');
-target2.appendChild(tableName2);
-target2.appendChild(newTable2);
-
-var inputElement = document.createElement('button');
-inputElement.textContent = "+";
-inputElement.setAttribute("class", "addColumnButton");
-inputElement.setAttribute("id", "addField2");
-inputElement.addEventListener('click', function () {
-    addColumn("data2");
-});
-target2.appendChild(inputElement);
-
 function addColumn(target) {
     var tableX = document.getElementById(target);
     const newColumn = document.createElement("tc");
     columnID(newColumn);
     const newRow1 = document.createElement("tr");
+    const newRow2 = document.createElement("tr");
     const tdColumnname = document.createElement("td");
     const tdDatatype = document.createElement("td");
     tdColumnname.append(addNameField());
     tdDatatype.appendChild(addDataType());
-    newRow1.appendChild(tdDatatype);
-    newColumn.appendChild(tdColumnname);
+    newRow1.appendChild(tdColumnname);
+    newRow2.appendChild(tdDatatype);
     newColumn.appendChild(newRow1);
+    newColumn.appendChild(newRow2);
     if (target == "data1") {
-        const newRow2 = document.createElement("tr");
+        const newRow3 = document.createElement("tr");
         const tdConnection = document.createElement("td");
         tdConnection.appendChild(addConnection());
-        newRow2.appendChild(tdConnection);
-        newColumn.appendChild(newRow2);
+        newRow3.appendChild(tdConnection);
+        newColumn.appendChild(newRow3);
     }
     newColumn.appendChild(deleteColumnButton());
     tableX.append(newColumn);
@@ -170,7 +164,7 @@ function addColumn(target) {
 
 function columnID(column){
     idHelper = idHelper + 1;
-    column.setAttribute("ID", "Column" + idHelper);
+    column.setAttribute("id", "Column" + idHelper);
 }
 
 function deleteColumnButton() {
